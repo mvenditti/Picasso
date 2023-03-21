@@ -1,12 +1,14 @@
 package httpserver
 
 import (
-	"OpenAIDemo/cmd/dependencies"
+	"Picasso/cmd/dependencies"
 	"github.com/mercadolibre/fury_go-platform/pkg/fury"
 )
 
 func routes(d dependencies.Definition) *fury.Application {
 	router, err := fury.NewWebApplication()
+
+	router.Get("/image", d.ArtistHandler.Paint)
 
 	if err != nil {
 		panic(err)

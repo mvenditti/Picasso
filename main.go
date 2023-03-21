@@ -1,8 +1,8 @@
-package Picasso
+package main
 
 import (
-	"OpenAIDemo/cmd/dependencies"
-	"OpenAIDemo/cmd/httpserver"
+	"Picasso/cmd/dependencies"
+	"Picasso/cmd/httpserver"
 )
 
 func main() {

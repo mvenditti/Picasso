@@ -1,20 +1,14 @@
 package ports
 
-import "OpenAIDemo/internal/core/services/http"
-
-type HttpService interface {
-	GetEndpoint(key string) (*http.Endpoint, error)
-	SetEndpoint(key string, endpoint http.Endpoint)
-}
-
-type TranslatorService interface {
-	Translate(input string) (string, error)
-}
+import (
+	"context"
+	"github.com/sashabaranov/go-openai"
+)
 
 type TranscriberService interface {
-	Transcribe(input []byte) (string, error)
+	Transcribe(c context.Context, input []byte) (openai.AudioResponse, error)
 }
 
 type ImageGeneratorService interface {
-	Generate(input string) ([]byte, error)
+	Generate(c context.Context, input string) (openai.ImageResponse, error)
 }

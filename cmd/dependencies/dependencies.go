@@ -1,29 +1,32 @@
 package dependencies
 
 import (
-	"OpenAIDemo/internal/core/services/http"
-	"OpenAIDemo/internal/core/services/image_generator"
-	"OpenAIDemo/internal/core/services/transcriber"
-	"OpenAIDemo/internal/core/services/translator"
-	"OpenAIDemo/internal/handlers/artist"
+	"Picasso/internal/core/services/image_generator"
+	"Picasso/internal/core/services/transcriber"
+	"Picasso/internal/handlers/artist"
+	"Picasso/pkg/constants"
+	"github.com/sashabaranov/go-openai"
+	"os"
 )
 
 type Definition struct {
-	httpService *http.Service
-
-	artistHandler artist.Handler
+	ArtistHandler *artist.Handler
 }
 
 func NewByEnvironment() Definition {
 	d := Definition{}
 
-	d.httpService = http.NewService()
+	apiKey := os.Getenv(constants.ApiKey)
+	if apiKey == "" {
+		panic("Failed to start up server due to empty API Key, please be aware to set API_KEY environment variable")
+	}
 
-	imageGeneratorService := image_generator.NewService()
-	transcriberService := transcriber.NewService()
-	translatorService := translator.NewService()
+	client := openai.NewClient(apiKey)
 
-	d.artistHandler = artist.NewHandler(imageGeneratorService, transcriberService, translatorService)
+	imageGeneratorService := image_generator.NewService(client)
+	transcriberService := transcriber.NewService(client)
 
-	return Definition{}
+	d.ArtistHandler = artist.NewHandler(imageGeneratorService, transcriberService)
+
+	return d
 }
