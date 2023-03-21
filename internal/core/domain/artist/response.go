@@ -1,5 +1,7 @@
 package artist
 
+import "github.com/sashabaranov/go-openai"
+
 type Painting struct {
-	Data []byte
+	Data openai.ImageResponse `json:"data"`
 }
